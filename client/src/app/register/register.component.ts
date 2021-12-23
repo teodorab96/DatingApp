@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ConsoleReporter } from 'jasmine';
 import { AccountService } from '../_services/account.service';
 
 @Component({
