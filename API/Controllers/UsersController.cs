@@ -3,37 +3,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
+using API.DTOs;
 using API.Entities;
+using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
+    [Authorize]
         public class UsersController : BaseApiController
     {
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _maper;
         
-        private readonly DataContext _context;
-
-        public UsersController(DataContext context)
+        public UsersController(IUserRepository userRepository,IMapper maper)
         {
-            _context = context;
+            this._maper = maper;
+            this._userRepository = userRepository;
+
         }
 
         //putanja za pristu ovo dijelu: api/users
         [HttpGet]
-        [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<MemberDTO>>> GetUsers()
         {
-            return await  _context.Users.ToListAsync();
+            var users = await _userRepository.GetMembersAsync();
+            return Ok(users);
         }
 
-        [Authorize]
         //api/users/2 - treba da vrati usera sa id=2
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AppUser>> GetUser(int id)
+        [HttpGet("{username}")]
+        public async Task<ActionResult<MemberDTO>> GetUser(string username)
         {
-            return await _context.Users.FindAsync(id);
+            return await _userRepository.GetMemberAsync(username);
         }
     }
 }
