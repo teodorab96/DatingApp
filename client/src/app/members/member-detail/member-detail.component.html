@@ -1,5 +1,5 @@
 <div class="row" *ngIf="member">
-    <div class="col">
+    <div class="col-2">
         <div class="card">
             <img src="{{member.photoUrl || './assets/user.png'}}" alt="" class="card-img img-thumbnail">
             <div class="card-body">
@@ -41,7 +41,7 @@
                 <p>{{member.interests}}</p>
             </tab>
             <tab heading="Photos">
-                <h4 class="mt-4">Photos will come soon</h4>
+                <ngx-gallery [options]="galleryOptions" [images]="galleryImages" class="ngx-gallery"></ngx-gallery>
             </tab>
             <tab heading="Messages">
                 <h4 class="mt-4">Messages will come soon</h4>

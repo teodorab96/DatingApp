@@ -14,5 +14,5 @@ export interface Member {
     interests:string;
     city:string;
     country:string;
-    photo:Photo[];
+    photos:Photo[];
 }

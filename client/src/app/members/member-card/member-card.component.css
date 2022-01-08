@@ -9,7 +9,7 @@
     transition-duration: 500ms;
     transition-timing-function: ease-out;
 }
-.card-img-wraper {
+.card-img-wrapper {
     overflow: hidden;
     position: relative;
 }
@@ -23,7 +23,7 @@
     opacity: 0;
 }
 
-.card-img-wraper:hover .member-icon {
+.card-img-wrapper:hover .member-icon {
     bottom: 0;
     opacity: 1;
 }
