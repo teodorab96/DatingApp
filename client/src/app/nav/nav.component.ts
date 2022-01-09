@@ -25,7 +25,7 @@ export class NavComponent implements OnInit {
     //login vraća tip Opservable koji ne radi ništa
     //sve dok se ne subscribe na opservable
     this.accountService.login(this.model).subscribe(response => {
-      this.router.navigateByUrl("members/");
+      this.router.navigateByUrl("/members");
       //this.loggedIn = true;
     });
   }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
@@ -39,6 +40,22 @@ namespace API.Controllers
         public async Task<ActionResult<MemberDTO>> GetUser(string username)
         {
             return await _userRepository.GetMemberAsync(username);
+        }
+        [HttpPut]
+        public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto){
+            //Uzimamo username iz tokena koji api uzima za autentikaciju
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _userRepository.GetUserByUsernameAsync(username);
+            //Da ne bi za svaki property od userra koristili
+            //uer.City = memberUpdateDto.City...
+            //koristimo auto maper koji sve to uradi umjesto nas
+            //Funkcija Map mapira memeberUpdate ka user-u
+            _maper.Map(memberUpdateDto,user);
+
+            _userRepository.Update(user);
+
+            if(await _userRepository.SaveAllAsync()) return NoContent();
+            return BadRequest("Failed to update user");
         }
     }
 }
