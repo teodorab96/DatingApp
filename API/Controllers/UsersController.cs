@@ -59,6 +59,7 @@ namespace API.Controllers
             if(await _userRepository.SaveAllAsync()) return NoContent();
             return BadRequest("Failed to update user");
         }
+        
         [HttpPost("add-photo")]
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file) 
         {
