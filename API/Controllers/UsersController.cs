@@ -30,7 +30,6 @@ namespace API.Controllers
             this._userRepository = userRepository;
 
         }
-
         //putanja za pristu ovo dijelu: api/users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDTO>>> GetUsers([FromQuery]UserParams userParams)

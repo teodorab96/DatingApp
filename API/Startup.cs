@@ -41,6 +41,11 @@ namespace API
             services.AddControllers();
             services.AddCors();
             services.AddIdentitiyServices(_config);
+            services.AddAuthorization( opt => 
+                        {
+                            opt.AddPolicy("RequireAdminRole",policy => policy.RequireRole("Admin"));
+                            opt.AddPolicy("ModeratePhotoRole",policy => policy.RequireRole("Admin","Moderator"));
+                        });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
