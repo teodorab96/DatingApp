@@ -8,6 +8,7 @@ using API.Extensions;
 using API.Interfaces;
 using API.Middleware;
 using API.Services;
+using API.SignalR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,6 +42,9 @@ namespace API
             services.AddControllers();
             services.AddCors();
             services.AddIdentitiyServices(_config);
+            services.AddSignalR(o =>{
+                o.EnableDetailedErrors = true;  
+            });
             services.AddAuthorization( opt => 
                         {
                             opt.AddPolicy("RequireAdminRole",policy => policy.RequireRole("Admin"));
@@ -62,7 +66,7 @@ namespace API
 
             app.UseRouting();
 
-            app.UseCors(x => x.WithOrigins("http://localhost:4200","https://localhost:4200").AllowAnyHeader().AllowAnyMethod());
+            app.UseCors(x => x.WithOrigins("http://localhost:4200","https://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
 
             app.UseAuthentication();
 
@@ -71,6 +75,8 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<PresenceHub>("hubs/presence");
+                endpoints.MapHub<MessageHub>("hubs/message");
             });
         }
     }

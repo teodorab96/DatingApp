@@ -3,6 +3,7 @@ import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { User } from './models/User';
 import { AccountService } from './_services/account.service';
+import { PresenceService } from './_services/presence.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ export class AppComponent implements OnInit {
   title = 'The dating app';
   users : any; //bilo kojeg tipa
 
-  constructor(private accountService: AccountService){}
+  constructor(private accountService: AccountService,private presenceService:PresenceService){}
   ngOnInit() {
      this.setCurrentUser();
   }
@@ -25,7 +26,12 @@ export class AppComponent implements OnInit {
     if(typeof storageUser ==='string')
     {
       const user:User = JSON.parse(storageUser);
-      this.accountService.setCurrentUser(user);
+      if(user)
+      {
+        this.accountService.setCurrentUser(user);
+        this.presenceService.createHubConnection(user);
+      }
+      
     }
   }
 
